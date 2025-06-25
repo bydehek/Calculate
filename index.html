@@ -154,7 +154,14 @@
       const expenses=TAXI_FEE+MATERIALS_COST+chemCost+amortCost+adminCost;
       const marginValue=(revenue-(expenses+cleanerPay)).toFixed(0);
       const marginPct=((revenue-(expenses+cleanerPay))/revenue*100).toFixed(1);
-      document.getElementById('result').innerHTML=`<h5>Заказ: ${name}, ${phone}</h5><p>Адрес: ${address}<br>Дата/время: ${new Date(datetime).toLocaleString()}</p><div class="row animate__animated animate__fadeIn"><div class="col-md-6 mb-3"><div class="card shadow"><div class="card-body"><h5 class="card-title">Итоги</h5><p><strong>Стоимость уборки:</strong> ${revenue.toLocaleString()} ₽</p><p><strong>Маржа:</strong> ${marginValue} ₽ (${marginPct}%)</p></div></div></div><div class="col-md-6 mb-3"><div class="card shadow"><div class="card-body"><h5 class="card-title">Детали расходов</h5><p><strong>Расходы:</strong> ${expenses.toFixed(0).toLocaleString()} ₽</p><p><strong>Клинер заработает:</strong> ${cleanerPay.toFixed(0).toLocaleString()} ₽</p></div></div></div></div>`;
+      document.getElementById('result').innerHTML=`<div class="card shadow mb-4 animate__animated animate__fadeIn">
+    <div class="card-body">
+      <h5 class="card-title">Заказ</h5>
+      <p class="mb-1"><strong>Клиент:</strong> ${name}, ${phone}</p>
+      <p class="mb-1"><strong>Адрес:</strong> ${address}</p>
+      <p class="mb-3"><strong>Дата/время:</strong> ${new Date(datetime).toLocaleString()}</p>
+    </div>
+  </div><div class="row animate__animated animate__fadeIn"><div class="col-md-6 mb-3"><div class="card shadow"><div class="card-body"><h5 class="card-title">Итоги</h5><p><strong>Стоимость уборки:</strong> ${revenue.toLocaleString()} ₽</p><p><strong>Маржа:</strong> ${marginValue} ₽ (${marginPct}%)</p></div></div></div><div class="col-md-6 mb-3"><div class="card shadow"><div class="card-body"><h5 class="card-title">Детали расходов</h5><p><strong>Расходы:</strong> ${expenses.toFixed(0).toLocaleString()} ₽</p><p><strong>Клинер заработает:</strong> ${cleanerPay.toFixed(0).toLocaleString()} ₽</p></div></div></div></div>`;
     });
   </script>
 </body>
