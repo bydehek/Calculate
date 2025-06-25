@@ -13,154 +13,148 @@
     .section { margin-bottom: 1.5rem; }
     .card .card-header { background-color: #fff; font-weight: bold; }
     #result .animate__animated { animation: fadeIn 0.5s ease-in-out; }
+    .services-table th, .services-table td { vertical-align: middle; }
+    .sub-section { border-top: 1px solid #dee2e6; padding-top: 1rem; margin-top: 1rem; }
   </style>
 </head>
 <body>
   <div class="container py-5">
     <h1 class="mb-5 text-center">Калькулятор стоимости уборки</h1>
-
     <form id="calcForm">
       <!-- Основные параметры -->
       <div class="card section shadow-sm animate__animated animate__fadeInUp">
         <div class="card-header">Основные параметры</div>
-        <div class="card-body row gy-3">
-          <div class="col-md-4">
-            <label for="type" class="form-label">Тип уборки</label>
-            <select id="type" class="form-select" required>
-              <option value="regular">Регулярная</option>
-              <option value="general">Генеральная</option>
-              <option value="after">После ремонта</option>
-            </select>
+        <div class="card-body">
+          <!-- Данные клиента -->
+          <div class="row gy-3">
+            <h5 class="col-12">Данные клиента</h5>
+            <div class="col-md-6">
+              <label for="name" class="form-label">Имя клиента</label>
+              <input type="text" class="form-control" id="name" placeholder="Иван Иванов" required>
+            </div>
+            <div class="col-md-6">
+              <label for="phone" class="form-label">Телефон</label>
+              <input type="tel" class="form-control" id="phone" placeholder="8 (900) 123-45-67" required>
+            </div>
           </div>
-          <div class="col-md-4">
-            <label for="area" class="form-label">Площадь (м²)</label>
-            <input type="number" class="form-control" id="area" min="1" value="35" required>
+          <!-- Адрес и дата -->
+          <div class="row gy-3 sub-section">
+            <h5 class="col-12">Адрес и время</h5>
+            <div class="col-md-8">
+              <label for="address" class="form-label">Адрес</label>
+              <input type="text" class="form-control" id="address" placeholder="г. Ханты-Мансийск, ул. Ленина, д.1" required>
+            </div>
+            <div class="col-md-4">
+              <label for="datetime" class="form-label">Дата и время</label>
+              <input type="datetime-local" class="form-control" id="datetime" required>
+            </div>
           </div>
-          <div class="col-md-4">
-            <label for="rooms" class="form-label">Комнат</label>
-            <input type="number" class="form-control" id="rooms" min="1" value="1" required>
-          </div>
-          <div class="col-md-4">
-            <label for="windows" class="form-label">Число створок</label>
-            <input type="number" class="form-control" id="windows" min="0" value="0">
-          </div>
-          <div class="col-md-4">
-            <label for="k" class="form-label">Коэффициент загрязнения (k)</label>
-            <select id="k" class="form-select">
-              <option value="0.8">0.8 (лёгкое)</option>
-              <option value="1.0" selected>1.0 (стандарт)</option>
-              <option value="1.2">1.2 (повышенное)</option>
-              <option value="1.5">1.5 (экстрим)</option>
-            
-            </select>
-          </div>
-          <div class="col-md-4 d-flex align-items-center">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="aroma">
-              <label class="form-check-label" for="aroma">Ароматизация (+1300₽)</label>
+          <!-- Параметры заказа -->
+          <div class="row gy-3 sub-section">
+            <h5 class="col-12">Параметры заказа</h5>
+            <div class="col-md-3">
+              <label for="type" class="form-label">Тип уборки</label>
+              <select id="type" class="form-select" required>
+                <option value="regular">Регулярная</option>
+                <option value="general">Генеральная</option>
+                <option value="after">После ремонта</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label for="area" class="form-label">Площадь (м²)</label>
+              <input type="number" class="form-control" id="area" min="1" value="35" required>
+            </div>
+            <div class="col-md-3">
+              <label for="rooms" class="form-label">Комнат</label>
+              <input type="number" class="form-control" id="rooms" min="1" value="1" required>
+            </div>
+            <div class="col-md-3">
+              <label for="k" class="form-label">Коэффициент загрязнения (k)</label>
+              <select id="k" class="form-select">
+                <option value="0.8">0.8 (лёгкое)</option>
+                <option value="1.0" selected>1.0 (стандарт)</option>
+                <option value="1.2">1.2 (повышенное)</option>
+                <option value="1.5">1.5 (экстрим)</option>
+              </select>
             </div>
           </div>
         </div>
       </div>
-
       <!-- Дополнительные услуги -->
       <div class="card section shadow-sm animate__animated animate__fadeInUp animate__delay-1s">
         <div class="card-header">Дополнительные услуги</div>
-        <div class="card-body row gy-3">
-          <div class="col-md-6 form-check">
-            <input class="form-check-input" type="checkbox" id="svcFridge">
-            <label class="form-check-label" for="svcFridge">Мойка холодильника (+600₽)</label>
-          </div>
-          <div class="col-md-6 form-check">
-            <input class="form-check-input" type="checkbox" id="svcOven">
-            <label class="form-check-label" for="svcOven">Духовка «эко» (+800₽)</label>
-          </div>
-          <div class="col-md-6 form-check">
-            <input class="form-check-input" type="checkbox" id="svcOzone">
-            <label class="form-check-label" for="svcOzone">Озонирование (+1500₽)</label>
-          </div>
-          <div class="col-md-4 form-check">
-            <input class="form-check-input" type="checkbox" id="svcIron">
-            <label class="form-check-label" for="svcIron">Глажка (450₽/ч)</label>
-          </div>
-          <div class="col-md-2">
-            <label for="ironHours" class="form-label">Часы глажки</label>
-            <input type="number" class="form-control" id="ironHours" min="0" value="0">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered services-table mb-0">
+              <thead class="table-light">
+                <tr><th>Услуга</th><th>Цена</th><th>Кол-во/м²</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Ароматизация</td><td>1300 ₽</td><td><input id="aroma" type="checkbox" class="form-check-input"></td></tr>
+                <tr><td>Мойка кухонной техники изнутри</td><td>300 ₽/шт</td><td><input id="svcKitchenTech" type="number" class="form-control form-control-sm" min="0" value="0"></td></tr>
+                <tr><td>Чистка хрустальных люстр</td><td>от 1000 ₽/шт</td><td><input id="svcChandeliers" type="number" class="form-control form-control-sm" min="0" value="0"></td></tr>
+                <tr><td>Протирка светильников</td><td>200 ₽/шт</td><td><input id="svcLights" type="number" class="form-control form-control-sm" min="0" value="0"></td></tr>
+                <tr><td>Снятие и навешивание штор</td><td>300 ₽/комплект</td><td><input id="svcCurtains" type="number" class="form-control form-control-sm" min="0" value="0"></td></tr>
+                <tr><td>Влажная уборка стен</td><td>100 ₽/м²</td><td><input id="svcWalls" type="number" class="form-control form-control-sm" min="0" value="0"></td></tr>
+                <tr><td>Мойка жалюзи (без снятия)</td><td>200 ₽/шт</td><td><input id="svcBlinds" type="number" class="form-control form-control-sm" min="0" value="0"></td></tr>
+                <tr><td>Мойка москитных сеток</td><td>200 ₽/шт</td><td><input id="svcScreens" type="number" class="form-control form-control-sm" min="0" value="0"></td></tr>
+                <tr><td>Мойка оконных решёток</td><td>200 ₽/шт</td><td><input id="svcGrilles" type="number" class="form-control form-control-sm" min="0" value="0"></td></tr>
+                <tr><td>Полная уборка балкона/лоджии</td><td>300 ₽/м²</td><td><input id="svcBalcony" type="number" class="form-control form-control-sm" min="0" value="0"></td></tr>
+                <tr><td>Мойка нестандартного остекления</td><td>250 ₽/м²</td><td><input id="svcCustomGlass" type="number" class="form-control form-control-sm" min="0" value="0"></td></tr>
+                <tr><td>Очистка межплиточных швов пароочистителем</td><td>по договорённости</td><td>—</td></tr>
+                <tr><td>Уход за комнатными растениями</td><td>по договорённости</td><td>—</td></tr>
+                <tr><td>Помощь в наведении порядка</td><td>по договорённости</td><td>—</td></tr>
+                <tr><td>Мойка мелких предметов обихода</td><td>поминутно/по договору</td><td>—</td></tr>
+                <tr><td>Уборка после торжества (лёгкий клининг)</td><td>по договорённости</td><td>—</td></tr>
+                <tr><td>Наведение порядка в гардеробе</td><td>по договорённости</td><td>—</td></tr>
+                <tr><td>Мойка окон (только внутренняя сторона)</td><td>от 200 ₽/шт</td><td><input id="svcWinInside" type="number" class="form-control form-control-sm" min="0" value="0"></td></tr>
+                <tr><td>Мойка окон (двух сторон)</td><td>от 450 ₽/шт</td><td><input id="svcWinBoth" type="number" class="form-control form-control-sm" min="0" value="0"></td></tr>
+                <tr><td>Мытьё офисных перегородок</td><td>60 ₽/м²</td><td><input id="svcPartitions" type="number" class="form-control form-control-sm" min="0" value="0"></td></tr>
+                <tr><td>Уборка складских помещений</td><td>45 ₽/м²</td><td><input id="svcWarehouse" type="number" class="form-control form-control-sm" min="0" value="0"></td></tr>
+                <tr><td>Уборка торговых площадей</td><td>55 ₽/м²</td><td><input id="svcRetail" type="number" class="form-control form-control-sm" min="0" value="0"></td></tr>
+                <tr><td>Глажка белья</td><td>500 ₽/30 мин</td><td><input id="svcIronTime" type="number" class="form-control form-control-sm" min="0" value="0"></td></tr>
+                <tr><td>Замена постельного белья</td><td>270 ₽/комплект</td><td><input id="svcBedding" type="number" class="form-control form-control-sm" min="0" value="0"></td></tr>
+                <tr><td>Забор и доставка ключей</td><td>от 500 ₽</td><td><input id="svcKeys" type="number" class="form-control form-control-sm" min="0" value="0"></td></tr>
+                <tr><td>Стирка белья</td><td>250 ₽/закладка</td><td><input id="svcWashLoad" type="number" class="form-control form-control-sm" min="0" value="0"></td></tr>
+                <tr><td>Мытьё посуды</td><td>500 ₽/30 мин</td><td><input id="svcDishes" type="number" class="form-control form-control-sm" min="0" value="0"></td></tr>
+                <tr><td>Чистка вытяжки кухонной</td><td>500 ₽/секция</td><td><input id="svcHood" type="number" class="form-control form-control-sm" min="0" value="0"></td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
-
-      <!-- Кнопка расчёта -->
+      <!-- Расчёт -->
       <div class="text-center section animate__animated animate__fadeInUp animate__delay-2s">
         <button type="button" id="calculateBtn" class="btn btn-success btn-lg shadow">Рассчитать</button>
       </div>
     </form>
-
     <!-- Результат -->
     <div id="result" class="section"></div>
   </div>
-
-  <!-- Bootstrap JS & Animate.css -->
+  <!-- JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     document.getElementById('calculateBtn').addEventListener('click', () => {
-      // Параметры
-      const params = { regular: { base: 2999, rate: 45, roomFee: 1000 }, general: { base: 5000, rate: 90, roomFee: 1500 }, after: { base: 7000, rate: 140, roomFee: 2000 } };
-      const TAXI_FEE = 820, MATERIALS_COST = 150, CHEM_BASE = 250, PCT_AMORT = 0.03, PCT_ADMIN = 0.08, PCT_CLEANER = 0.30, WINDOW_RATE = 350, AROMA_COST = 1300;
-      const SVC = { fridge: 600, oven: 800, ozone: 1500, ironRate: 450 };
-
-      // Ввод
+      const name = document.getElementById('name').value;
+      const phone = document.getElementById('phone').value;
+      const address = document.getElementById('address').value;
+      const datetime = document.getElementById('datetime').value;
       const type = document.getElementById('type').value;
       const area = +document.getElementById('area').value;
       const rooms = +document.getElementById('rooms').value;
-      const windows = +document.getElementById('windows').value;
       const k = +document.getElementById('k').value;
-      const aroma = document.getElementById('aroma').checked;
-
-      // Выручка
-      const { base, rate, roomFee } = params[type];
-      const priceBase = base + Math.max(area - 35, 0) * rate + Math.max(rooms - 1, 0) * roomFee + windows * WINDOW_RATE + (aroma ? AROMA_COST : 0);
-      let svcCost = 0;
-      if (document.getElementById('svcFridge').checked) svcCost += SVC.fridge;
-      if (document.getElementById('svcOven').checked) svcCost += SVC.oven;
-      if (document.getElementById('svcOzone').checked) svcCost += SVC.ozone;
-      if (document.getElementById('svcIron').checked) svcCost += (+document.getElementById('ironHours').value || 0) * SVC.ironRate;
-      const revenue = priceBase + svcCost;
-
-      // Расчёт расходов и оплаты клинера
-      const chemCost = CHEM_BASE * k;
-      const amortCost = revenue * PCT_AMORT;
-      const adminCost = revenue * PCT_ADMIN;
-      const cleanerPay = revenue * PCT_CLEANER;
-      const expenses = TAXI_FEE + MATERIALS_COST + chemCost + amortCost + adminCost;
-
-      // Себестоимость и маржа
-      const totalCost = expenses + cleanerPay;
-      const marginValue = (revenue - totalCost).toFixed(0);
-      const marginPct = ((revenue - totalCost) / revenue * 100).toFixed(1);
-
-      document.getElementById('result').innerHTML = `
-        <div class="row animate__animated animate__fadeIn">
-          <div class="col-md-6 mb-3">
-            <div class="card shadow">
-              <div class="card-body">
-                <h5 class="card-title">Итоги</h5>
-                <p class="card-text"><strong>Стоимость уборки:</strong> ${revenue.toLocaleString()} ₽</p>
-                <p class="card-text"><strong>Маржа:</strong> ${marginValue} ₽ (${marginPct}%)</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6 mb-3">
-            <div class="card shadow">
-              <div class="card-body">
-                <h5 class="card-title">Детали расходов</h5>
-                <p class="card-text"><strong>Расходы:</strong> ${expenses.toFixed(0).toLocaleString()} ₽</p>
-                <p class="card-text"><strong>Клинер заработает:</strong> ${cleanerPay.toFixed(0).toLocaleString()} ₽</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
+      const params = { regular:{base:2999,rate:45,roomFee:1000},general:{base:5000,rate:90,roomFee:1500},after:{base:7000,rate:140,roomFee:2000} };
+      const TAXI_FEE=820,MATERIALS_COST=150,CHEM_BASE=250;
+      const PCT_AMORT=0.03,PCT_ADMIN=0.08,PCT_CLEANER=0.30,AROMA_COST=1300;
+      let revenue=params[type].base+Math.max(area-35,0)*params[type].rate+Math.max(rooms-1,0)*params[type].roomFee;
+      if(document.getElementById('aroma').checked) revenue+=AROMA_COST;
+      const svcRates={svcKitchenTech:300,svcChandeliers:1000,svcLights:200,svcCurtains:300,svcWalls:100,svcBlinds:200,svcScreens:200,svcGrilles:200,svcBalcony:300,svcCustomGlass:250,svcWinInside:200,svcWinBoth:450,svcPartitions:60,svcWarehouse:45,svcRetail:55,svcIronTime:500/30,svcBedding:270,svcKeys:500,svcWashLoad:250,svcDishes:500/30,svcHood:500};
+      Object.keys(svcRates).forEach(id=>{const el=document.getElementById(id); if(el) revenue+=(+el.value||0)*svcRates[id];});
+      const chemCost=CHEM_BASE*k,amortCost=revenue*PCT_AMORT,adminCost=revenue*PCT_ADMIN,cleanerPay=revenue*PCT_CLEANER;
+      const expenses=TAXI_FEE+MATERIALS_COST+chemCost+amortCost+adminCost;
+      const marginValue=(revenue-(expenses+cleanerPay)).toFixed(0);
+      const marginPct=((revenue-(expenses+cleanerPay))/revenue*100).toFixed(1);
+      document.getElementById('result').innerHTML=`<h5>Заказ: ${name}, ${phone}</h5><p>Адрес: ${address}<br>Дата/время: ${new Date(datetime).toLocaleString()}</p><div class="row animate__animated animate__fadeIn"><div class="col-md-6 mb-3"><div class="card shadow"><div class="card-body"><h5 class="card-title">Итоги</h5><p><strong>Стоимость уборки:</strong> ${revenue.toLocaleString()} ₽</p><p><strong>Маржа:</strong> ${marginValue} ₽ (${marginPct}%)</p></div></div></div><div class="col-md-6 mb-3"><div class="card shadow"><div class="card-body"><h5 class="card-title">Детали расходов</h5><p><strong>Расходы:</strong> ${expenses.toFixed(0).toLocaleString()} ₽</p><p><strong>Клинер заработает:</strong> ${cleanerPay.toFixed(0).toLocaleString()} ₽</p></div></div></div></div>`;
     });
   </script>
 </body>
