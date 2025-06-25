@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Калькулятор стоимости уборки</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Animate.css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <style>
+    body { background-color: #f8f9fa; }
+    .card { border-radius: 1rem; }
+    .section { margin-bottom: 1.5rem; }
+    .card .card-header { background-color: #fff; font-weight: bold; }
+    #result .animate__animated { animation: fadeIn 0.5s ease-in-out; }
+  </style>
+</head>
+<body>
+  <div class="container py-5">
+    <h1 class="mb-5 text-center">Калькулятор стоимости уборки</h1>
+
+    <form id="calcForm">
+      <!-- Основные параметры -->
+      <div class="card section shadow-sm animate__animated animate__fadeInUp">
+        <div class="card-header">Основные параметры</div>
+        <div class="card-body row gy-3">
+          <div class="col-md-4">
+            <label for="type" class="form-label">Тип уборки</label>
+            <select id="type" class="form-select" required>
+              <option value="regular">Регулярная</option>
+              <option value="general">Генеральная</option>
+              <option value="after">После ремонта</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label for="area" class="form-label">Площадь (м²)</label>
+            <input type="number" class="form-control" id="area" min="1" value="35" required>
+          </div>
+          <div class="col-md-4">
+            <label for="rooms" class="form-label">Комнат</label>
+            <input type="number" class="form-control" id="rooms" min="1" value="1" required>
+          </div>
+          <div class="col-md-4">
+            <label for="windows" class="form-label">Число створок</label>
+            <input type="number" class="form-control" id="windows" min="0" value="0">
+          </div>
+          <div class="col-md-4">
+            <label for="k" class="form-label">Коэффициент загрязнения (k)</label>
+            <select id="k" class="form-select">
+              <option value="0.8">0.8 (лёгкое)</option>
+              <option value="1.0" selected>1.0 (стандарт)</option>
+              <option value="1.2">1.2 (повышенное)</option>
+              <option value="1.5">1.5 (экстрим)</option>
+            
+            </select>
+          </div>
+          <div class="col-md-4 d-flex align-items-center">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="aroma">
+              <label class="form-check-label" for="aroma">Ароматизация (+1300₽)</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Дополнительные услуги -->
+      <div class="card section shadow-sm animate__animated animate__fadeInUp animate__delay-1s">
+        <div class="card-header">Дополнительные услуги</div>
+        <div class="card-body row gy-3">
+          <div class="col-md-6 form-check">
+            <input class="form-check-input" type="checkbox" id="svcFridge">
+            <label class="form-check-label" for="svcFridge">Мойка холодильника (+600₽)</label>
+          </div>
+          <div class="col-md-6 form-check">
+            <input class="form-check-input" type="checkbox" id="svcOven">
+            <label class="form-check-label" for="svcOven">Духовка «эко» (+800₽)</label>
+          </div>
+          <div class="col-md-6 form-check">
+            <input class="form-check-input" type="checkbox" id="svcOzone">
+            <label class="form-check-label" for="svcOzone">Озонирование (+1500₽)</label>
+          </div>
+          <div class="col-md-4 form-check">
+            <input class="form-check-input" type="checkbox" id="svcIron">
+            <label class="form-check-label" for="svcIron">Глажка (450₽/ч)</label>
+          </div>
+          <div class="col-md-2">
+            <label for="ironHours" class="form-label">Часы глажки</label>
+            <input type="number" class="form-control" id="ironHours" min="0" value="0">
+          </div>
+        </div>
+      </div>
+
+      <!-- Кнопка расчёта -->
+      <div class="text-center section animate__animated animate__fadeInUp animate__delay-2s">
+        <button type="button" id="calculateBtn" class="btn btn-success btn-lg shadow">Рассчитать</button>
+      </div>
+    </form>
+
+    <!-- Результат -->
+    <div id="result" class="section"></div>
+  </div>
+
+  <!-- Bootstrap JS & Animate.css -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.getElementById('calculateBtn').addEventListener('click', () => {
+      // Параметры
+      const params = { regular: { base: 2999, rate: 45, roomFee: 1000 }, general: { base: 5000, rate: 90, roomFee: 1500 }, after: { base: 7000, rate: 140, roomFee: 2000 } };
+      const TAXI_FEE = 820, MATERIALS_COST = 150, CHEM_BASE = 250, PCT_AMORT = 0.03, PCT_ADMIN = 0.08, PCT_CLEANER = 0.30, WINDOW_RATE = 350, AROMA_COST = 1300;
+      const SVC = { fridge: 600, oven: 800, ozone: 1500, ironRate: 450 };
+
+      // Ввод
+      const type = document.getElementById('type').value;
+      const area = +document.getElementById('area').value;
+      const rooms = +document.getElementById('rooms').value;
+      const windows = +document.getElementById('windows').value;
+      const k = +document.getElementById('k').value;
+      const aroma = document.getElementById('aroma').checked;
+
+      // Выручка
+      const { base, rate, roomFee } = params[type];
+      const priceBase = base + Math.max(area - 35, 0) * rate + Math.max(rooms - 1, 0) * roomFee + windows * WINDOW_RATE + (aroma ? AROMA_COST : 0);
+      let svcCost = 0;
+      if (document.getElementById('svcFridge').checked) svcCost += SVC.fridge;
+      if (document.getElementById('svcOven').checked) svcCost += SVC.oven;
+      if (document.getElementById('svcOzone').checked) svcCost += SVC.ozone;
+      if (document.getElementById('svcIron').checked) svcCost += (+document.getElementById('ironHours').value || 0) * SVC.ironRate;
+      const revenue = priceBase + svcCost;
+
+      // Расчёт расходов и оплаты клинера
+      const chemCost = CHEM_BASE * k;
+      const amortCost = revenue * PCT_AMORT;
+      const adminCost = revenue * PCT_ADMIN;
+      const cleanerPay = revenue * PCT_CLEANER;
+      const expenses = TAXI_FEE + MATERIALS_COST + chemCost + amortCost + adminCost;
+
+      // Себестоимость и маржа
+      const totalCost = expenses + cleanerPay;
+      const marginValue = (revenue - totalCost).toFixed(0);
+      const marginPct = ((revenue - totalCost) / revenue * 100).toFixed(1);
+
+      document.getElementById('result').innerHTML = `
+        <div class="row animate__animated animate__fadeIn">
+          <div class="col-md-6 mb-3">
+            <div class="card shadow">
+              <div class="card-body">
+                <h5 class="card-title">Итоги</h5>
+                <p class="card-text"><strong>Стоимость уборки:</strong> ${revenue.toLocaleString()} ₽</p>
+                <p class="card-text"><strong>Маржа:</strong> ${marginValue} ₽ (${marginPct}%)</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="card shadow">
+              <div class="card-body">
+                <h5 class="card-title">Детали расходов</h5>
+                <p class="card-text"><strong>Расходы:</strong> ${expenses.toFixed(0).toLocaleString()} ₽</p>
+                <p class="card-text"><strong>Клинер заработает:</strong> ${cleanerPay.toFixed(0).toLocaleString()} ₽</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+  </script>
+</body>
+</html>
