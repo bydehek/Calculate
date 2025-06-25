@@ -145,7 +145,7 @@
       const k = +document.getElementById('k').value;
       const params = { regular:{base:2999,rate:45,roomFee:1000},general:{base:5000,rate:90,roomFee:1500},after:{base:7000,rate:140,roomFee:2000} };
       const TAXI_FEE=820,MATERIALS_COST=150,CHEM_BASE=250;
-      const PCT_AMORT=0.03,PCT_ADMIN=0.08,PCT_CLEANER=0.30,AROMA_COST=1300;
+      const PCT_AMORT=0.03,PCT_ADMIN=0.08,PCT_CLEANER=0.35,AROMA_COST=1300;
       let revenue=params[type].base+Math.max(area-35,0)*params[type].rate+Math.max(rooms-1,0)*params[type].roomFee;
       if(document.getElementById('aroma').checked) revenue+=AROMA_COST;
       const svcRates={svcKitchenTech:300,svcChandeliers:1000,svcLights:200,svcCurtains:300,svcWalls:100,svcBlinds:200,svcScreens:200,svcGrilles:200,svcBalcony:300,svcCustomGlass:250,svcWinInside:200,svcWinBoth:450,svcPartitions:60,svcWarehouse:45,svcRetail:55,svcIronTime:500/30,svcBedding:270,svcKeys:500,svcWashLoad:250,svcDishes:500/30,svcHood:500};
